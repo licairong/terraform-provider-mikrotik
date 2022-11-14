@@ -50,7 +50,7 @@ func resourcePppSecret() *schema.Resource {
 			},
 			"routes": {
 				Type:        schema.TypeString,
-				Required:    true,
+				Optional:    true,
 				Description: "Routes that appear on the server when the client is connected.",
 			},
 			"service": {

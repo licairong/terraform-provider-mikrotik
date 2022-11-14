@@ -86,6 +86,7 @@ func Provider(client *mt.Mikrotik) *schema.Provider {
 			"mikrotik_ip_route":              resourceIpRoute(),
 			"mikrotik_ppp_secret":            resourcePppSecret(),
 			"mikrotik_interface_l2tp_client": resourceL2tpClient(),
+			"mikrotik_system_license":        resourceSystemLicense(),
 		},
 		DataSourcesMap: map[string]*schema.Resource{
 			"mikrotik_ip_addresss": dataSourceIpAddress(),
