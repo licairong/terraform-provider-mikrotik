@@ -17,14 +17,28 @@ func (client Mikrotik) AddSystemLicense(license *SystemLicense) (*SystemLicense,
 		return nil, err
 	}
 
-	cmd := Marshal("/system/license/renew", license)
+	cmd := []string{"/system/license/print"}
 	log.Printf("[INFO] Running the mikrotik command: `%s`", cmd)
 	r, err := c.RunArgs(cmd)
 
-	log.Printf("[DEBUG] system license creation response: `%v`", r)
-
 	if err != nil {
 		return nil, err
+	}
+	log.Printf("[DEBUG] found system license: %v", r)
+	info := []SystemLicense{}
+	_ = Unmarshal(*r, &info)
+	log.Printf("[DEBUG] found system license: %v", info[0].Level)
+
+	if info[0].Level != "p1" {
+		cmd2 := Marshal("/system/license/renew", license)
+		log.Printf("[INFO] Running the mikrotik command: `%s`", cmd2)
+		r, err := c.RunArgs(cmd2)
+
+		log.Printf("[DEBUG] system license creation response: `%v`", r)
+
+		if err != nil {
+			return nil, err
+		}
 	}
 
 	return license, nil
